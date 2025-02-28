@@ -1,0 +1,93 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h2>Dashboard Administrativo</h2>
+
+<div class="row">
+    <!-- Tarjeta: Rutas Activas -->
+    <div class="col-md-4">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-header">Rutas Activas</div>
+            <div class="card-body">
+                <h5 class="card-title">@ViewBag.TotalRutasActivas</h5>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarjeta: Vehículos en Buen Estado -->
+    <div class="col-md-4">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-header">Vehículos en Buen Estado</div>
+            <div class="card-body">
+                <h5 class="card-title">@ViewBag.TotalVehiculosBuenos</h5>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarjeta: Boletos Vendidos -->
+    <div class="col-md-4">
+        <div class="card text-white bg-danger mb-3">
+            <div class="card-header">Boletos Vendidos este Mes</div>
+            <div class="card-body">
+                <h5 class="card-title">@ViewBag.BoletosVendidos</h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Gráfico con estadísticas -->
+<div class="card mt-4">
+    <div class="card-header">
+        <h5>Estadísticas Generales</h5>
+    </div>
+    <div class="card-body">
+        <canvas id="graficoBoletos"></canvas>
+    </div>
+</div>
+
+<!-- Últimos boletos vendidos -->
+<div class="card mt-4">
+    <div class="card-header">
+        <h5>Últimos Boletos Vendidos</h5>
+    </div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Ruta</th>
+                    <th>Fecha</th>
+                    <th>Pasajero</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var boleto in ViewBag.UltimosBoletos)
+                {
+                    <tr>
+                        <td>@boleto.Id</td>
+                        <td>@boleto.Ruta.Nombre</td>
+                        <td>@boleto.FechaCompra.ToString("dd/MM/yyyy")</td>
+                        <td>@boleto.Usuario.NombreCompleto</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var ctx = document.getElementById('graficoBoletos').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Rutas Activas', 'Vehículos Buenos', 'Boletos Vendidos'],
+            datasets: [{
+                label: 'Estadísticas',
+                data: [@ViewBag.TotalRutasActivas, @ViewBag.TotalVehiculosBuenos, @ViewBag.BoletosVendidos],
+                backgroundColor: ['blue', 'green', 'red']
+            }]
+        }
+    });
+</script>

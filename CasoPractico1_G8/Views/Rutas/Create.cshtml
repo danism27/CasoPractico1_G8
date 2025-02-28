@@ -55,3 +55,19 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+}
+
+
+<input type="text" id="codigoRuta" name="CodigoRuta" readonly />
+<button type="button" onclick="generarCodigo()">Generar Código</button>
+
+<script>
+    function generarCodigo() {
+        let codigo = "RT-" + Math.floor(1000 + Math.random() * 9000);
+        document.getElementById("codigoRuta").value = codigo;
+    }
+</script>
