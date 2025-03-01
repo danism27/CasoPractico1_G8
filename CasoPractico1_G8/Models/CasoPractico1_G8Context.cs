@@ -13,17 +13,13 @@ namespace CasoPractico1_G8.Models
         public DbSet<Boleto> Boleto { get; set; }
         public DbSet<Parada> Parada { get; set; }
         public DbSet<Horario> Horario { get; set; }
+        public DbSet<RutaParada> RutaParada { get; set; }
+        public DbSet<RutaHorario> RutaHorario { get; set; }
 
         // Configuración de las relaciones y propiedades
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Ruta>(Ruta =>
-            {
-                Ruta.HasKey(r => r.Id);
-                Ruta.Property(r => r.Nombre).IsRequired().HasMaxLength(100);
-                Ruta.Property(r => r.CodigoRuta).IsRequired().HasMaxLength(20);
-            });
-
+            // Configuración de la entidad Usuario
             modelBuilder.Entity<Usuario>(Usuario =>
             {
                 Usuario.HasKey(u => u.Id);
@@ -32,48 +28,79 @@ namespace CasoPractico1_G8.Models
                 Usuario.Property(u => u.Correo).HasMaxLength(100);
             });
 
+            // Configuración de la entidad Ruta
+            modelBuilder.Entity<Ruta>(Ruta =>
+            {
+                Ruta.HasKey(r => r.Id);
+                Ruta.Property(r => r.Nombre).IsRequired().HasMaxLength(100);
+                Ruta.Property(r => r.CodigoRuta).IsRequired().HasMaxLength(20);
+            });
+
+            // Configuración de la entidad Vehículo
             modelBuilder.Entity<Vehiculo>(Vehiculo =>
             {
                 Vehiculo.HasKey(v => v.Id);
             });
 
+            // Configuración de la entidad Boleto
             modelBuilder.Entity<Boleto>(Boleto =>
             {
                 Boleto.HasKey(b => b.Id);
+
+                Boleto.HasOne(b => b.Usuario)
+                    .WithMany(u => u.BoletosComprados)
+                    .HasForeignKey(b => b.UsuarioId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                Boleto.HasOne(b => b.Ruta)
+                    .WithMany(r => r.BoletosVendidos)
+                    .HasForeignKey(b => b.RutaId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
 
+            // Configuración de la entidad Parada
             modelBuilder.Entity<Parada>(Parada =>
             {
                 Parada.HasKey(p => p.Id);
             });
 
+            // Configuración de la entidad Horario
             modelBuilder.Entity<Horario>(Horario =>
             {
                 Horario.HasKey(h => h.Id);
             });
 
-            // Configuración de relaciones
-            modelBuilder.Entity<Boleto>()
-                .HasOne(b => b.Usuario)
-                .WithMany(u => u.BoletosComprados)
-                .HasForeignKey(b => b.UsuarioId)
-                .OnDelete(DeleteBehavior.Restrict);
+            // Configuración de la tabla intermedia RutaParada (Relación muchos a muchos entre Ruta y Parada)
+            modelBuilder.Entity<RutaParada>()
+                .HasKey(rp => new { rp.RutaId, rp.ParadaId });
 
-            modelBuilder.Entity<Boleto>()
-                .HasOne(b => b.Ruta)
-                .WithMany(r => r.BoletosVendidos)
-                .HasForeignKey(b => b.RutaId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Parada>()
-                .HasOne(p => p.Ruta)
+            modelBuilder.Entity<RutaParada>()
+                .HasOne(rp => rp.Ruta)
                 .WithMany(r => r.Paradas)
-                .HasForeignKey(p => p.RutaId);
+                .HasForeignKey(rp => rp.RutaId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Horario>()
-                .HasOne(h => h.Ruta)
+            modelBuilder.Entity<RutaParada>()
+                .HasOne(rp => rp.Parada)
+                .WithMany(p => p.Rutas)
+                .HasForeignKey(rp => rp.ParadaId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Configuración de la tabla intermedia RutaHorario (Relación muchos a muchos entre Ruta y Horario)
+            modelBuilder.Entity<RutaHorario>()
+                .HasKey(rh => new { rh.RutaId, rh.HorarioId });
+
+            modelBuilder.Entity<RutaHorario>()
+                .HasOne(rh => rh.Ruta)
                 .WithMany(r => r.Horarios)
-                .HasForeignKey(h => h.RutaId);
+                .HasForeignKey(rh => rh.RutaId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<RutaHorario>()
+                .HasOne(rh => rh.Horario)
+                .WithMany(h => h.Rutas)
+                .HasForeignKey(rh => rh.HorarioId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -28,11 +28,9 @@ namespace CasoPractico1_G8.Models
         [Display(Name = "Usuario que registró")]
         public int UsuarioRegistroId { get; set; }
         public Usuario UsuarioRegistro { get; set; }
-        [Required]
-        public int VehiculoId { get; set; }
-        // Relaciones
-        public IEnumerable<Parada>? Paradas { get; set; }
-        public IEnumerable<Horario>? Horarios { get; set; }
-        public IEnumerable<Boleto>? BoletosVendidos { get; set; }
+
+        public ICollection<RutaParada>? Paradas { get; set; }
+        public ICollection<RutaHorario>? Horarios { get; set; }
+        public ICollection<Boleto>? BoletosVendidos { get; set; }
     }
 }

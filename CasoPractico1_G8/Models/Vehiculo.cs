@@ -26,9 +26,9 @@ namespace CasoPractico1_G8.Models
         [Display(Name = "Fecha de registro")]
         public DateTime FechaRegistro { get; set; } = DateTime.Now;
 
-        [Required]
         [Display(Name = "Usuario que registró")]
-        public int UsuarioRegistroId { get; set; }
-        public Usuario UsuarioRegistro { get; set; }
+        public int? UsuarioRegistroId { get; set; } // Lo cambié a nullable
+
+        public Usuario? UsuarioRegistro { get; set; } // Permite valores nulos
     }
 }

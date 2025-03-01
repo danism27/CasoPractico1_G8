@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace CasoPractico1_G8.Models
 {
@@ -10,8 +11,10 @@ namespace CasoPractico1_G8.Models
         [Display(Name = "Nombre de la parada")]
         public string Nombre { get; set; }
 
-        [Required]
-        public int RutaId { get; set; }
-        public Ruta Ruta { get; set; }
+        [MaxLength(300)]
+        [Display(Name = "Descripción")]
+        public string Descripcion { get; set; }
+
+        public ICollection<RutaParada>? Rutas { get; set; }
     }
 }

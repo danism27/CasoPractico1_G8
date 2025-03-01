@@ -9,23 +9,22 @@ using CasoPractico1_G8.Models;
 
 namespace CasoPractico1_G8.Controllers
 {
-    public class BoletosController : Controller
+    public class ParadasController : Controller
     {
         private readonly CasoPractico1_G8Context _context;
 
-        public BoletosController(CasoPractico1_G8Context context)
+        public ParadasController(CasoPractico1_G8Context context)
         {
             _context = context;
         }
 
-        // GET: Boletoes
+        // GET: Paradas
         public async Task<IActionResult> Index()
         {
-            var casoPractico1_G8Context = _context.Boleto.Include(b => b.Ruta).Include(b => b.Usuario);
-            return View(await casoPractico1_G8Context.ToListAsync());
+            return View(await _context.Parada.ToListAsync());
         }
 
-        // GET: Boletoes/Details/5
+        // GET: Paradas/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,45 +32,39 @@ namespace CasoPractico1_G8.Controllers
                 return NotFound();
             }
 
-            var boleto = await _context.Boleto
-                .Include(b => b.Ruta)
-                .Include(b => b.Usuario)
+            var parada = await _context.Parada
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (boleto == null)
+            if (parada == null)
             {
                 return NotFound();
             }
 
-            return View(boleto);
+            return View(parada);
         }
 
-        // GET: Boletoes/Create
+        // GET: Paradas/Create
         public IActionResult Create()
         {
-            ViewData["RutaId"] = new SelectList(_context.Ruta, "Id", "CodigoRuta");
-            ViewData["UsuarioId"] = new SelectList(_context.Usuario, "Id", "Contraseña");
             return View();
         }
 
-        // POST: Boletoes/Create
+        // POST: Paradas/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UsuarioId,RutaId,FechaCompra,Activo")] Boleto boleto)
+        public async Task<IActionResult> Create([Bind("Id,Nombre,Descripcion")] Parada parada)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(boleto);
+                _context.Add(parada);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RutaId"] = new SelectList(_context.Ruta, "Id", "CodigoRuta", boleto.RutaId);
-            ViewData["UsuarioId"] = new SelectList(_context.Usuario, "Id", "Contraseña", boleto.UsuarioId);
-            return View(boleto);
+            return View(parada);
         }
 
-        // GET: Boletoes/Edit/5
+        // GET: Paradas/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -79,24 +72,22 @@ namespace CasoPractico1_G8.Controllers
                 return NotFound();
             }
 
-            var boleto = await _context.Boleto.FindAsync(id);
-            if (boleto == null)
+            var parada = await _context.Parada.FindAsync(id);
+            if (parada == null)
             {
                 return NotFound();
             }
-            ViewData["RutaId"] = new SelectList(_context.Ruta, "Id", "CodigoRuta", boleto.RutaId);
-            ViewData["UsuarioId"] = new SelectList(_context.Usuario, "Id", "Contraseña", boleto.UsuarioId);
-            return View(boleto);
+            return View(parada);
         }
 
-        // POST: Boletoes/Edit/5
+        // POST: Paradas/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UsuarioId,RutaId,FechaCompra,Activo")] Boleto boleto)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Descripcion")] Parada parada)
         {
-            if (id != boleto.Id)
+            if (id != parada.Id)
             {
                 return NotFound();
             }
@@ -105,12 +96,12 @@ namespace CasoPractico1_G8.Controllers
             {
                 try
                 {
-                    _context.Update(boleto);
+                    _context.Update(parada);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BoletoExists(boleto.Id))
+                    if (!ParadaExists(parada.Id))
                     {
                         return NotFound();
                     }
@@ -121,12 +112,10 @@ namespace CasoPractico1_G8.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RutaId"] = new SelectList(_context.Ruta, "Id", "CodigoRuta", boleto.RutaId);
-            ViewData["UsuarioId"] = new SelectList(_context.Usuario, "Id", "Contraseña", boleto.UsuarioId);
-            return View(boleto);
+            return View(parada);
         }
 
-        // GET: Boletoes/Delete/5
+        // GET: Paradas/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -134,36 +123,34 @@ namespace CasoPractico1_G8.Controllers
                 return NotFound();
             }
 
-            var boleto = await _context.Boleto
-                .Include(b => b.Ruta)
-                .Include(b => b.Usuario)
+            var parada = await _context.Parada
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (boleto == null)
+            if (parada == null)
             {
                 return NotFound();
             }
 
-            return View(boleto);
+            return View(parada);
         }
 
-        // POST: Boletoes/Delete/5
+        // POST: Paradas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var boleto = await _context.Boleto.FindAsync(id);
-            if (boleto != null)
+            var parada = await _context.Parada.FindAsync(id);
+            if (parada != null)
             {
-                _context.Boleto.Remove(boleto);
+                _context.Parada.Remove(parada);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BoletoExists(int id)
+        private bool ParadaExists(int id)
         {
-            return _context.Boleto.Any(e => e.Id == id);
+            return _context.Parada.Any(e => e.Id == id);
         }
     }
 }

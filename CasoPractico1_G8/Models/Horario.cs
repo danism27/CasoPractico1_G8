@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace CasoPractico1_G8.Models
@@ -12,7 +13,9 @@ namespace CasoPractico1_G8.Models
         public TimeSpan HoraSalida { get; set; }
 
         [Required]
-        public int RutaId { get; set; }
-        public Ruta Ruta { get; set; }
+        [Display(Name = "Hora de llegada")]
+        public TimeSpan HoraLlegada { get; set; }
+
+        public ICollection<RutaHorario>? Rutas { get; set; }
     }
 }
