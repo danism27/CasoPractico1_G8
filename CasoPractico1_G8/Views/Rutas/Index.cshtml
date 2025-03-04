@@ -1,64 +1,36 @@
 ﻿@model IEnumerable<CasoPractico1_G8.Models.Ruta>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Rutas";
 }
 
-<h1>Index</h1>
+<h1>Rutas</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a href="@Url.Action("Create")" class="btn btn-primary">Crear Nueva Ruta</a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CodigoRuta)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Descripcion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estado)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaRegistro)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UsuarioRegistro)
-            </th>
-            <th></th>
+            <th>Codigo Ruta</th>
+            <th>Nombre</th>
+            <th>Descripcion</th>
+            <th>Estado</th>
+            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var ruta in Model)
         {
             <tr>
+                <td>@ruta.CodigoRuta</td>
+                <td>@ruta.Nombre</td>
+                <td>@ruta.Descripcion</td>
+                <td>@ruta.Estado</td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CodigoRuta)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nombre)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Descripcion)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Estado)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FechaRegistro)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UsuarioRegistro.Contraseña)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a href="@Url.Action("Edit", new { id = ruta.Id })" class="btn btn-warning">Editar</a> |
+                    <a href="@Url.Action("Delete", new { id = ruta.Id })" class="btn btn-danger">Eliminar</a>
                 </td>
             </tr>
         }

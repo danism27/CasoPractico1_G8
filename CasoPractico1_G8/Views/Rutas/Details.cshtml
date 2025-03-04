@@ -1,54 +1,23 @@
 ﻿@model CasoPractico1_G8.Models.Ruta
 
-@{
-    ViewData["Title"] = "Details";
-}
+<h2>Detalles de la Ruta</h2>
+<p><strong>Nombre:</strong> @Model.Nombre</p>
+<p><strong>Descripción:</strong> @Model.Descripcion</p>
+<p><strong>Estado:</strong> @(Model.Estado ? "Activo" : "Inactivo")</p>
+<p><strong>Fecha de Registro:</strong> @Model.FechaRegistro</p>
 
-<h1>Details</h1>
+<h3>Paradas</h3>
+<ul>
+    @foreach (var parada in Model.Paradas)
+    {
+        <li>@parada.Parada.Nombre</li>
+    }
+</ul>
 
-<div>
-    <h4>Ruta</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CodigoRuta)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CodigoRuta)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Nombre)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Nombre)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Descripcion)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Descripcion)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Estado)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Estado)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaRegistro)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FechaRegistro)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UsuarioRegistro)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UsuarioRegistro.Contraseña)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<h3>Horarios</h3>
+<ul>
+    @foreach (var horario in Model.Horarios)
+    {
+        <li>@horario.Horario.HoraSalida</li>
+    }
+</ul>

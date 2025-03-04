@@ -6,11 +6,39 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CasoPractico1_G8.Migrations
 {
     /// <inheritdoc />
-    public partial class InicializarDB : Migration
+    public partial class iniciarBD : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Horario",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    HoraSalida = table.Column<TimeSpan>(type: "time", nullable: false),
+                    HoraLlegada = table.Column<TimeSpan>(type: "time", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Horario", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Parada",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Descripcion = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Parada", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Usuario",
                 columns: table => new
@@ -64,7 +92,7 @@ namespace CasoPractico1_G8.Migrations
                     CapacidadPasajeros = table.Column<int>(type: "int", nullable: false),
                     Estado = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FechaRegistro = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UsuarioRegistroId = table.Column<int>(type: "int", nullable: false)
+                    UsuarioRegistroId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -73,8 +101,7 @@ namespace CasoPractico1_G8.Migrations
                         name: "FK_Vehiculo_Usuario_UsuarioRegistroId",
                         column: x => x.UsuarioRegistroId,
                         principalTable: "Usuario",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -106,19 +133,23 @@ namespace CasoPractico1_G8.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Horario",
+                name: "RutaHorario",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    HoraSalida = table.Column<TimeSpan>(type: "time", nullable: false),
-                    RutaId = table.Column<int>(type: "int", nullable: false)
+                    RutaId = table.Column<int>(type: "int", nullable: false),
+                    HorarioId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Horario", x => x.Id);
+                    table.PrimaryKey("PK_RutaHorario", x => new { x.RutaId, x.HorarioId });
                     table.ForeignKey(
-                        name: "FK_Horario_Ruta_RutaId",
+                        name: "FK_RutaHorario_Horario_HorarioId",
+                        column: x => x.HorarioId,
+                        principalTable: "Horario",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RutaHorario_Ruta_RutaId",
                         column: x => x.RutaId,
                         principalTable: "Ruta",
                         principalColumn: "Id",
@@ -126,19 +157,23 @@ namespace CasoPractico1_G8.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Parada",
+                name: "RutaParada",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    RutaId = table.Column<int>(type: "int", nullable: false)
+                    RutaId = table.Column<int>(type: "int", nullable: false),
+                    ParadaId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Parada", x => x.Id);
+                    table.PrimaryKey("PK_RutaParada", x => new { x.RutaId, x.ParadaId });
                     table.ForeignKey(
-                        name: "FK_Parada_Ruta_RutaId",
+                        name: "FK_RutaParada_Parada_ParadaId",
+                        column: x => x.ParadaId,
+                        principalTable: "Parada",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RutaParada_Ruta_RutaId",
                         column: x => x.RutaId,
                         principalTable: "Ruta",
                         principalColumn: "Id",
@@ -156,19 +191,19 @@ namespace CasoPractico1_G8.Migrations
                 column: "UsuarioId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Horario_RutaId",
-                table: "Horario",
-                column: "RutaId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Parada_RutaId",
-                table: "Parada",
-                column: "RutaId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Ruta_UsuarioRegistroId",
                 table: "Ruta",
                 column: "UsuarioRegistroId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RutaHorario_HorarioId",
+                table: "RutaHorario",
+                column: "HorarioId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RutaParada_ParadaId",
+                table: "RutaParada",
+                column: "ParadaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vehiculo_UsuarioRegistroId",
@@ -183,13 +218,19 @@ namespace CasoPractico1_G8.Migrations
                 name: "Boleto");
 
             migrationBuilder.DropTable(
+                name: "RutaHorario");
+
+            migrationBuilder.DropTable(
+                name: "RutaParada");
+
+            migrationBuilder.DropTable(
+                name: "Vehiculo");
+
+            migrationBuilder.DropTable(
                 name: "Horario");
 
             migrationBuilder.DropTable(
                 name: "Parada");
-
-            migrationBuilder.DropTable(
-                name: "Vehiculo");
 
             migrationBuilder.DropTable(
                 name: "Ruta");

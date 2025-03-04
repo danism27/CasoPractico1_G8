@@ -26,8 +26,8 @@ namespace CasoPractico1_G8.Models
 
         [Required]
         [Display(Name = "Usuario que registró")]
-        public int UsuarioRegistroId { get; set; }
-        public Usuario UsuarioRegistro { get; set; }
+        public int? UsuarioRegistroId { get; set; }
+        public Usuario? UsuarioRegistro { get; set; }
 
         public ICollection<RutaParada>? Paradas { get; set; }
         public ICollection<RutaHorario>? Horarios { get; set; }

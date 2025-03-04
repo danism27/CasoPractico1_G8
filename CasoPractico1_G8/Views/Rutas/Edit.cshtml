@@ -1,61 +1,57 @@
 ﻿@model CasoPractico1_G8.Models.Ruta
 
-@{
-    ViewData["Title"] = "Edit";
-}
-
-<h1>Edit</h1>
-
-<h4>Ruta</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="CodigoRuta" class="control-label"></label>
-                <input asp-for="CodigoRuta" class="form-control" />
-                <span asp-validation-for="CodigoRuta" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Descripcion" class="control-label"></label>
-                <input asp-for="Descripcion" class="form-control" />
-                <span asp-validation-for="Descripcion" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Estado" /> @Html.DisplayNameFor(model => model.Estado)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="FechaRegistro" class="control-label"></label>
-                <input asp-for="FechaRegistro" class="form-control" />
-                <span asp-validation-for="FechaRegistro" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UsuarioRegistroId" class="control-label"></label>
-                <select asp-for="UsuarioRegistroId" class="form-control" asp-items="ViewBag.UsuarioRegistroId"></select>
-                <span asp-validation-for="UsuarioRegistroId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+<h2>Editar Ruta</h2>
+<form asp-action="Edit" method="post">
+    <div class="form-group">
+        <label asp-for="CodigoRuta"></label>
+        <input asp-for="CodigoRuta" class="form-control" required readonly />
     </div>
-</div>
+    <div class="form-group">
+        <label asp-for="Nombre"></label>
+        <input asp-for="Nombre" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label asp-for="Descripcion"></label>
+        <textarea asp-for="Descripcion" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+        <label asp-for="Estado"></label>
+        <select asp-for="Estado" class="form-control">
+            <option value="true">Activo</option>
+            <option value="false">Inactivo</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Paradas</label>
+        <select asp-for="Paradas" class="form-control" multiple="multiple">
+            @if (ViewData["Paradas"] != null)
+            {
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+                var paradas = ViewData["Paradas"] as MultiSelectList;
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
+                foreach (var parada in paradas)
+
+                {
+                    <option value="@parada.Value">@parada.Text</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Horarios</label>
+        <select asp-for="Horarios" class="form-control" multiple="multiple">
+            @if (ViewData["Horarios"] != null)
+            {
+
+                var horarios = ViewData["Horarios"] as MultiSelectList;
+
+                foreach (var horario in horarios)
+
+                {
+                    <option value="@horario.Value">@horario.Text</option>
+                }
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
