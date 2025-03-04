@@ -8,12 +8,12 @@ namespace CasoPractico1_G8.Models
         public int Id { get; set; }
 
         [Required]
-        public int UsuarioId { get; set; }
-        public Usuario Usuario { get; set; }
+        public int? UsuarioId { get; set; }
+        public Usuario? Usuario { get; set; }
 
         [Required]
-        public int RutaId { get; set; }
-        public Ruta Ruta { get; set; }
+        public int? RutaId { get; set; }
+        public Ruta? Ruta { get; set; }
 
         public DateTime FechaCompra { get; set; } = DateTime.Now;
 

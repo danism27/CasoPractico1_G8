@@ -1,57 +1,54 @@
 ﻿@model CasoPractico1_G8.Models.Ruta
 
-<h2>Editar Ruta</h2>
-<form asp-action="Edit" method="post">
-    <div class="form-group">
-        <label asp-for="CodigoRuta"></label>
-        <input asp-for="CodigoRuta" class="form-control" required readonly />
-    </div>
-    <div class="form-group">
-        <label asp-for="Nombre"></label>
-        <input asp-for="Nombre" class="form-control" required />
-    </div>
-    <div class="form-group">
-        <label asp-for="Descripcion"></label>
-        <textarea asp-for="Descripcion" class="form-control"></textarea>
-    </div>
-    <div class="form-group">
-        <label asp-for="Estado"></label>
-        <select asp-for="Estado" class="form-control">
-            <option value="true">Activo</option>
-            <option value="false">Inactivo</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label>Paradas</label>
-        <select asp-for="Paradas" class="form-control" multiple="multiple">
-            @if (ViewData["Paradas"] != null)
-            {
+@{
+    ViewData["Title"] = "Editar Ruta";
+}
 
-                var paradas = ViewData["Paradas"] as MultiSelectList;
+<h2 class="text-center text-primary">Editar Ruta</h2>
 
-                foreach (var parada in paradas)
+<div class="container">
+    <div class="card shadow p-4">
+        <form asp-action="Edit" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
 
-                {
-                    <option value="@parada.Value">@parada.Text</option>
-                }
-            }
-        </select>
+            <div class="mb-3">
+                <label asp-for="Nombre" class="form-label">Nombre de la Ruta</label>
+                <input asp-for="Nombre" class="form-control" placeholder="Ingrese el nombre" required>
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Descripcion" class="form-label">Descripción</label>
+                <textarea asp-for="Descripcion" class="form-control" placeholder="Ingrese la descripción"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Estado" class="form-label">Estado</label>
+                <select asp-for="Estado" class="form-select" required>
+                    <option value="true">Activa</option>
+                    <option value="false">Inactiva</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ParadasTexto" class="form-label">Paradas (separadas por coma)</label>
+                <input type="text" asp-for="ParadasTexto" class="form-control" placeholder="Ejemplo: Parada 1, Parada 2, Parada 3">
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="HorariosTexto" class="form-label">Horarios (separados por coma)</label>
+                <input type="text" asp-for="HorariosTexto" class="form-control" placeholder="Ejemplo: 08:00 AM, 12:00 PM, 06:00 PM">
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="UsuarioRegistroId" class="form-label">Usuario que registró</label>
+                <select asp-for="UsuarioRegistroId" asp-items="@(ViewData["UsuarioRegistroId"] as IEnumerable<SelectListItem>)" class="form-select" required>
+                    <option value="">Seleccione un usuario</option>
+                </select>
+                <span asp-validation-for="UsuarioRegistroId" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-success w-100">Guardar Ruta</button>
+        </form>
     </div>
-    <div class="form-group">
-        <label>Horarios</label>
-        <select asp-for="Horarios" class="form-control" multiple="multiple">
-            @if (ViewData["Horarios"] != null)
-            {
-
-                var horarios = ViewData["Horarios"] as MultiSelectList;
-
-                foreach (var horario in horarios)
-
-                {
-                    <option value="@horario.Value">@horario.Text</option>
-                }
-            }
-        </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Guardar</button>
-</form>
+</div>

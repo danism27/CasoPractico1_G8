@@ -1,38 +1,39 @@
 ﻿@model IEnumerable<CasoPractico1_G8.Models.Ruta>
 
 @{
-    ViewData["Title"] = "Rutas";
+    ViewData["Title"] = "Listado de Rutas";
 }
 
-<h1>Rutas</h1>
+<h2 class="text-center text-primary">Listado de Rutas</h2>
 
-<p>
-    <a href="@Url.Action("Create")" class="btn btn-primary">Crear Nueva Ruta</a>
-</p>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Codigo Ruta</th>
-            <th>Nombre</th>
-            <th>Descripcion</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var ruta in Model)
-        {
-            <tr>
-                <td>@ruta.CodigoRuta</td>
-                <td>@ruta.Nombre</td>
-                <td>@ruta.Descripcion</td>
-                <td>@ruta.Estado</td>
-                <td>
-                    <a href="@Url.Action("Edit", new { id = ruta.Id })" class="btn btn-warning">Editar</a> |
-                    <a href="@Url.Action("Delete", new { id = ruta.Id })" class="btn btn-danger">Eliminar</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="container">
+    <div class="card shadow p-4">
+        <a href="@Url.Action("Create", "Rutas")" class="btn btn-primary mb-3">Crear Nueva Ruta</a>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Estado</th>
+                    <th>Horarios</th>
+                    <th>Paradas</th> <!-- Nueva columna para paradas -->
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var ruta in Model)
+                {
+                    <tr>
+                        <td>@ruta.Nombre</td>
+                        <td>@(ruta.Estado ? "Activa" : "Inactiva")</td>
+                        <td>@ruta.HorariosTexto</td> <!-- Mostrar los horarios -->
+                        <td>@ruta.ParadasTexto</td> <!-- Mostrar las paradas -->
+                        <td>
+                            <a href="@Url.Action("Edit", "Rutas", new { id = ruta.Id })" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="@Url.Action("Delete", "Rutas", new { id = ruta.Id })" class="btn btn-danger btn-sm">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

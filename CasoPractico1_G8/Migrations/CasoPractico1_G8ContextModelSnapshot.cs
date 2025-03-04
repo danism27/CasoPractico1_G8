@@ -31,15 +31,21 @@ namespace CasoPractico1_G8.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("Activo")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<DateTime>("FechaCompra")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<int>("RutaId")
+                    b.Property<int?>("RutaId")
+                        .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<int>("UsuarioId")
+                    b.Property<int?>("UsuarioId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -48,49 +54,7 @@ namespace CasoPractico1_G8.Migrations
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("Boleto");
-                });
-
-            modelBuilder.Entity("CasoPractico1_G8.Models.Horario", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<TimeSpan>("HoraLlegada")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan>("HoraSalida")
-                        .HasColumnType("time");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Horario");
-                });
-
-            modelBuilder.Entity("CasoPractico1_G8.Models.Parada", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Descripcion")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Parada");
+                    b.ToTable("Boleto", (string)null);
                 });
 
             modelBuilder.Entity("CasoPractico1_G8.Models.Ruta", b =>
@@ -101,11 +65,6 @@ namespace CasoPractico1_G8.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("CodigoRuta")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasMaxLength(300)
@@ -115,51 +74,28 @@ namespace CasoPractico1_G8.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("FechaRegistro")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("UsuarioRegistroId")
+                    b.Property<int?>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UsuarioRegistroId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UsuarioId");
+
                     b.HasIndex("UsuarioRegistroId");
 
-                    b.ToTable("Ruta");
-                });
-
-            modelBuilder.Entity("CasoPractico1_G8.Models.RutaHorario", b =>
-                {
-                    b.Property<int>("RutaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("HorarioId")
-                        .HasColumnType("int");
-
-                    b.HasKey("RutaId", "HorarioId");
-
-                    b.HasIndex("HorarioId");
-
-                    b.ToTable("RutaHorario");
-                });
-
-            modelBuilder.Entity("CasoPractico1_G8.Models.RutaParada", b =>
-                {
-                    b.Property<int>("RutaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ParadaId")
-                        .HasColumnType("int");
-
-                    b.HasKey("RutaId", "ParadaId");
-
-                    b.HasIndex("ParadaId");
-
-                    b.ToTable("RutaParada");
+                    b.ToTable("Ruta", (string)null);
                 });
 
             modelBuilder.Entity("CasoPractico1_G8.Models.Usuario", b =>
@@ -216,10 +152,13 @@ namespace CasoPractico1_G8.Migrations
 
                     b.Property<string>("Estado")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("FechaRegistro")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("Modelo")
                         .IsRequired()
@@ -231,14 +170,19 @@ namespace CasoPractico1_G8.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<int?>("UsuarioId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("UsuarioRegistroId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UsuarioId");
+
                     b.HasIndex("UsuarioRegistroId");
 
-                    b.ToTable("Vehiculo");
+                    b.ToTable("Vehiculo", (string)null);
                 });
 
             modelBuilder.Entity("CasoPractico1_G8.Models.Boleto", b =>
@@ -246,13 +190,13 @@ namespace CasoPractico1_G8.Migrations
                     b.HasOne("CasoPractico1_G8.Models.Ruta", "Ruta")
                         .WithMany("BoletosVendidos")
                         .HasForeignKey("RutaId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CasoPractico1_G8.Models.Usuario", "Usuario")
                         .WithMany("BoletosComprados")
                         .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Ruta");
@@ -262,79 +206,35 @@ namespace CasoPractico1_G8.Migrations
 
             modelBuilder.Entity("CasoPractico1_G8.Models.Ruta", b =>
                 {
-                    b.HasOne("CasoPractico1_G8.Models.Usuario", "UsuarioRegistro")
+                    b.HasOne("CasoPractico1_G8.Models.Usuario", null)
                         .WithMany("RutasRegistradas")
+                        .HasForeignKey("UsuarioId");
+
+                    b.HasOne("CasoPractico1_G8.Models.Usuario", "UsuarioRegistro")
+                        .WithMany()
                         .HasForeignKey("UsuarioRegistroId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("UsuarioRegistro");
-                });
-
-            modelBuilder.Entity("CasoPractico1_G8.Models.RutaHorario", b =>
-                {
-                    b.HasOne("CasoPractico1_G8.Models.Horario", "Horario")
-                        .WithMany("Rutas")
-                        .HasForeignKey("HorarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CasoPractico1_G8.Models.Ruta", "Ruta")
-                        .WithMany("Horarios")
-                        .HasForeignKey("RutaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Horario");
-
-                    b.Navigation("Ruta");
-                });
-
-            modelBuilder.Entity("CasoPractico1_G8.Models.RutaParada", b =>
-                {
-                    b.HasOne("CasoPractico1_G8.Models.Parada", "Parada")
-                        .WithMany("Rutas")
-                        .HasForeignKey("ParadaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CasoPractico1_G8.Models.Ruta", "Ruta")
-                        .WithMany("Paradas")
-                        .HasForeignKey("RutaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Parada");
-
-                    b.Navigation("Ruta");
                 });
 
             modelBuilder.Entity("CasoPractico1_G8.Models.Vehiculo", b =>
                 {
-                    b.HasOne("CasoPractico1_G8.Models.Usuario", "UsuarioRegistro")
+                    b.HasOne("CasoPractico1_G8.Models.Usuario", null)
                         .WithMany("VehiculosRegistrados")
-                        .HasForeignKey("UsuarioRegistroId");
+                        .HasForeignKey("UsuarioId");
+
+                    b.HasOne("CasoPractico1_G8.Models.Usuario", "UsuarioRegistro")
+                        .WithMany()
+                        .HasForeignKey("UsuarioRegistroId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("UsuarioRegistro");
-                });
-
-            modelBuilder.Entity("CasoPractico1_G8.Models.Horario", b =>
-                {
-                    b.Navigation("Rutas");
-                });
-
-            modelBuilder.Entity("CasoPractico1_G8.Models.Parada", b =>
-                {
-                    b.Navigation("Rutas");
                 });
 
             modelBuilder.Entity("CasoPractico1_G8.Models.Ruta", b =>
                 {
                     b.Navigation("BoletosVendidos");
-
-                    b.Navigation("Horarios");
-
-                    b.Navigation("Paradas");
                 });
 
             modelBuilder.Entity("CasoPractico1_G8.Models.Usuario", b =>

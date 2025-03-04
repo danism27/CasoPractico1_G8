@@ -9,11 +9,11 @@ using CasoPractico1_G8.Models;
 
 namespace CasoPractico1_G8.Controllers
 {
-    public class BoletosController : Controller
+    public class BoletoesController : Controller
     {
         private readonly CasoPractico1_G8Context _context;
 
-        public BoletosController(CasoPractico1_G8Context context)
+        public BoletoesController(CasoPractico1_G8Context context)
         {
             _context = context;
         }
@@ -48,7 +48,7 @@ namespace CasoPractico1_G8.Controllers
         // GET: Boletoes/Create
         public IActionResult Create()
         {
-            ViewData["RutaId"] = new SelectList(_context.Ruta, "Id", "CodigoRuta");
+            ViewData["RutaId"] = new SelectList(_context.Ruta, "Id", "Nombre");
             ViewData["UsuarioId"] = new SelectList(_context.Usuario, "Id", "Contraseña");
             return View();
         }
@@ -66,7 +66,7 @@ namespace CasoPractico1_G8.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RutaId"] = new SelectList(_context.Ruta, "Id", "CodigoRuta", boleto.RutaId);
+            ViewData["RutaId"] = new SelectList(_context.Ruta, "Id", "Nombre", boleto.RutaId);
             ViewData["UsuarioId"] = new SelectList(_context.Usuario, "Id", "Contraseña", boleto.UsuarioId);
             return View(boleto);
         }
@@ -84,7 +84,7 @@ namespace CasoPractico1_G8.Controllers
             {
                 return NotFound();
             }
-            ViewData["RutaId"] = new SelectList(_context.Ruta, "Id", "CodigoRuta", boleto.RutaId);
+            ViewData["RutaId"] = new SelectList(_context.Ruta, "Id", "Nombre", boleto.RutaId);
             ViewData["UsuarioId"] = new SelectList(_context.Usuario, "Id", "Contraseña", boleto.UsuarioId);
             return View(boleto);
         }
@@ -121,7 +121,7 @@ namespace CasoPractico1_G8.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RutaId"] = new SelectList(_context.Ruta, "Id", "CodigoRuta", boleto.RutaId);
+            ViewData["RutaId"] = new SelectList(_context.Ruta, "Id", "Nombre", boleto.RutaId);
             ViewData["UsuarioId"] = new SelectList(_context.Usuario, "Id", "Contraseña", boleto.UsuarioId);
             return View(boleto);
         }
