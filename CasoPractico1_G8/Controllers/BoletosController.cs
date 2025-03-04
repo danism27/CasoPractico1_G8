@@ -9,16 +9,16 @@ using CasoPractico1_G8.Models;
 
 namespace CasoPractico1_G8.Controllers
 {
-    public class BoletoesController : Controller
+    public class BoletosController : Controller
     {
         private readonly CasoPractico1_G8Context _context;
 
-        public BoletoesController(CasoPractico1_G8Context context)
+        public BoletosController(CasoPractico1_G8Context context)
         {
             _context = context;
         }
 
-        // GET: Boletoes
+        // GET: Boletos
         public async Task<IActionResult> Index()
         {
             var casoPractico1_G8Context = _context.Boleto.Include(b => b.Ruta).Include(b => b.Usuario);

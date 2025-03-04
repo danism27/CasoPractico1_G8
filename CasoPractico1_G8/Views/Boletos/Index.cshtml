@@ -1,0 +1,39 @@
+﻿@model IEnumerable<CasoPractico1_G8.Models.Boleto>
+
+@{
+    ViewData["Title"] = "Listado de Boletos";
+}
+
+<h2 class="text-center text-primary">Listado de Boletos</h2>
+
+<div class="container">
+    <div class="card shadow p-4">
+        <a href="@Url.Action("Create", "Boletos")" class="btn btn-primary mb-3">Crear Nuevo Boleto</a>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Usuario</th>
+                    <th>Ruta</th>
+                    <th>Fecha de Compra</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var boleto in Model)
+                {
+                    <tr>
+                        <td>@boleto.Usuario.NombreCompleto</td>
+                        <td>@boleto.Ruta.Nombre</td>
+                        <td>@boleto.FechaCompra.ToString("dd/MM/yyyy")</td>
+                        <td>@(boleto.Activo ? "Activo" : "Inactivo")</td>
+                        <td>
+                            <a href="@Url.Action("Edit", "Boletos", new { id = boleto.Id })" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="@Url.Action("Delete", "Boletos", new { id = boleto.Id })" class="btn btn-danger btn-sm">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -15,6 +15,7 @@ namespace CasoPractico1_G8.Models
         public int? RutaId { get; set; }
         public Ruta? Ruta { get; set; }
 
+        [Display(Name = "Fecha de Compra")]
         public DateTime FechaCompra { get; set; } = DateTime.Now;
 
         public bool Activo { get; set; } = true;
