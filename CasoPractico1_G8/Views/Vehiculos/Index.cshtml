@@ -1,35 +1,38 @@
 ﻿@model IEnumerable<CasoPractico1_G8.Models.Vehiculo>
 
 @{
-    ViewData["Title"] = "Lista de Vehículos";
+    ViewData["Title"] = "Listado de Vehículos";
 }
 
-<h1>Lista de Vehículos</h1>
-<p>
-    <a asp-action="Create" class="btn btn-success">Agregar Nuevo Vehículo</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Placa</th>
-            <th>Modelo</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Placa</td>
-                <td>@item.Modelo</td>
-                <td>@item.Estado</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Editar</a>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Detalles</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Eliminar</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<h2 class="text-center text-primary">Listado de Vehículos</h2>
+
+<div class="container">
+    <div class="card shadow p-4">
+        <a href="@Url.Action("Create", "Vehiculos")" class="btn btn-success mb-3">Agregar Nuevo Vehículo</a>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Placa</th>
+                    <th>Modelo</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var vehiculo in Model)
+                {
+                    <tr>
+                        <td>@vehiculo.Placa</td>
+                        <td>@vehiculo.Modelo</td>
+                        <td>@vehiculo.Estado</td>
+                        <td>
+                            <a href="@Url.Action("Edit", "Vehiculos", new { id = vehiculo.Id })" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="@Url.Action("Details", "Vehiculos", new { id = vehiculo.Id })" class="btn btn-info btn-sm">Detalles</a>
+                            <a href="@Url.Action("Delete", "Vehiculos", new { id = vehiculo.Id })" class="btn btn-danger btn-sm">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
